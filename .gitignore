@@ -47,3 +47,6 @@ Pulumi.*.yaml
 # AWS
 .aws-sam/
 
+
+# Development
+IMPLEMENTATION.md
