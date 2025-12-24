@@ -11,18 +11,25 @@ class ApiLambda {
     table: aws.dynamodb.Table,
     workerLambdaArn: pulumi.Output<string>
   ) {
-    // Path to the API Lambda code
+    // Path to the API Lambda directories
     const apiLambdaPath = path.join(__dirname, '../../../services/api');
+    const apiLambdaDistPath = path.join(apiLambdaPath, 'dist');
+    const apiLambdaNodeModulesPath = path.join(apiLambdaPath, 'node_modules');
     
-    // Package the Lambda code directory
-    const lambdaCode = new pulumi.asset.FileArchive(apiLambdaPath);
+    // Package the entire dist directory (includes services/api and shared)
+    // The compiled structure will be: dist/services/api/handler.js and dist/shared/types.js
+    const lambdaCode = new pulumi.asset.AssetArchive({
+      'services': new pulumi.asset.FileArchive(path.join(apiLambdaDistPath, 'services')),
+      'shared': new pulumi.asset.FileArchive(path.join(apiLambdaDistPath, 'shared')),
+      'node_modules': new pulumi.asset.FileArchive(apiLambdaNodeModulesPath),
+    });
 
     this.apiLambda = new aws.lambda.Function(
       `api-lambda-${stack}`,
       {
         name: `wfg-api-lambda-${stack}`,
-        runtime: 'nodejs18.x',
-        handler: 'dist/handler.handler',
+        runtime: 'nodejs20.x',
+        handler: 'services/api/handler.handler',
         role: role.arn,
         code: lambdaCode,
         timeout: 10,
