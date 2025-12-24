@@ -2,7 +2,7 @@ import { APIGatewayProxyEventV2, APIGatewayProxyResultV2 } from 'aws-lambda';
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 import { DynamoDBDocumentClient, PutCommand, GetCommand } from '@aws-sdk/lib-dynamodb';
 import { LambdaClient, InvokeCommand } from '@aws-sdk/client-lambda';
-import { TransactionRequest, HealthCheckResponse, TransactionStatusResponse } from '../shared/types';
+import { TransactionRequest, HealthCheckResponse, TransactionStatusResponse } from '../../shared/types';
 
 // Initialize clients
 const dynamoClient = DynamoDBDocumentClient.from(new DynamoDBClient({}));
@@ -25,7 +25,7 @@ export const handler = async (
     // Transaction status endpoint
     if (method === 'GET' && path.startsWith('/v1/transactions/')) {
       // Extract transaction_id from path: /v1/transactions/{transaction_id}
-      const pathParts = path.split('/').filter(p => p);
+      const pathParts = path.split('/').filter(Boolean);
       const transactionId = pathParts[pathParts.length - 1];
       if (!transactionId || transactionId === 'transactions') {
         return createResponse(400, { error: 'Transaction ID is required' });

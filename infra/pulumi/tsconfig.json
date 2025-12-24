@@ -4,7 +4,6 @@
         "outDir": "bin",
         "target": "es2020",
         "module": "commonjs",
-        "moduleResolution": "node",
         "sourceMap": true,
         "experimentalDecorators": true,
         "pretty": true,
@@ -16,5 +15,5 @@
     },
     "include": [
         "*.ts"
-    ]
+, "resources/**/*.ts"    ]
 }

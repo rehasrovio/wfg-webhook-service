@@ -1,6 +1,6 @@
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 import { DynamoDBDocumentClient, UpdateCommand } from '@aws-sdk/lib-dynamodb';
-import { TransactionRequest } from '../shared/types';
+import { TransactionRequest } from '../../shared/types';
 
 const dynamoClient = DynamoDBDocumentClient.from(new DynamoDBClient({}));
 
