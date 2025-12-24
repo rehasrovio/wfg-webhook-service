@@ -29,7 +29,7 @@ class ApiLambda {
       {
         name: `wfg-api-lambda-${stack}`,
         runtime: 'nodejs20.x',
-        handler: 'services/api/handler.handler',
+        handler: 'services/api/main.handler',
         role: role.arn,
         code: lambdaCode,
         timeout: 10,
